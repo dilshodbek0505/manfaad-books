@@ -1,3 +1,4 @@
+from typing import Iterable
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -101,6 +102,7 @@ class Book(BaseModel):
             except Exception as e:
                 print(str(e))
 
+
     def __str__(self):
         return f"{self.title} - {self.author.full_name}"
 
@@ -176,7 +178,16 @@ class StoryUser(BaseModel):
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_viewed = models.BooleanField(default=False)
-    end_date = models.DateTimeField(default=timezone.now() + timezone.timedelta(days=1), editable=False)
+    end_date = models.DateTimeField(editable=True, blank=True, null=True)
 
     def __str__(self):
         return f"{self.story.title} | {self.user.full_name}"
+
+
+class StorySaveUser(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    story = models.ForeignKey(Story, on_delete=models.CASCADE)
+    
+    def __str__(self) -> str:
+        return self.user.full_name
+

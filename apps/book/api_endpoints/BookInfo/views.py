@@ -8,7 +8,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from apps.book.models import Book
-from apps.book.api_endpoints.BookInfo.serializers import BookSerializer
+from apps.book.api_endpoints.BookInfo.serializers import BookDetailsSerializer
 from apps.users.models import User
 
 from django.conf import settings
@@ -20,7 +20,7 @@ from wsgiref.util import FileWrapper
 
 class BookWithGenerateAudioUrl(GenericAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = BookSerializer
+    serializer_class = BookDetailsSerializer
     lookup_field = 'book_id'
 
     def get_serializer_context(self):
@@ -46,7 +46,7 @@ class BookWithGenerateAudioUrl(GenericAPIView):
 
 
 class BookWithoutGenerateAudioUrl(GenericAPIView):
-    serializer_class = BookSerializer
+    serializer_class = BookDetailsSerializer
 
     def get(self, request, *args, **kwargs):
         try:

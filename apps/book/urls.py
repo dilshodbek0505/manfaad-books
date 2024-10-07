@@ -9,7 +9,9 @@ from apps.book.api_endpoints.HomePage.views import (
 )
 from apps.book.api_endpoints.BookSave.views import (
     BookSaveApi,
-    BookSaveListApi
+    BookSaveListApi,
+    BookLikedListApi,
+    BookLikedUpdateApi
 )
 from apps.book.api_endpoints.Search.views import (
     SearchHomeApi,
@@ -17,7 +19,9 @@ from apps.book.api_endpoints.Search.views import (
 )
 from apps.book.api_endpoints.Story.views import (
     StoryListApi,
-    StoryUpdateApi
+    StoryUpdateApi,
+    StorySaveUserListCreateApi,
+    StorySaveUserDeleteApi
 )
 
 
@@ -42,4 +46,10 @@ urlpatterns = [
     # story
     path('story/', StoryListApi.as_view()),
     path('story-details/<uuid:pk>/', StoryUpdateApi.as_view()),
+    path('story-save/', StorySaveUserListCreateApi.as_view()),
+    path('story-save/<uuid:pk>/', StorySaveUserDeleteApi.as_view()),
+
+    # liked
+    path('book-user-like/list/', BookLikedListApi.as_view()),
+    path('book-user-like/details/<uuid:pk>/', BookLikedUpdateApi.as_view())
 ]

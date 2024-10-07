@@ -2,11 +2,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, UpdateAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView, GenericAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from apps.book.api_endpoints.Story.serializers import StoryUserSerializer
-from apps.book.models import Story, StoryUser
+from apps.book.api_endpoints.Story.serializers import StoryUserSerializer, StorySaveUserSerializer
+from apps.book.models import Story, StoryUser, StorySaveUser
 
 
 class StoryListApi(ListAPIView):
@@ -41,3 +41,27 @@ class StoryUpdateApi(GenericAPIView):
             return Response({"data": "ok"}, status=200)
         except ObjectDoesNotExist:
             return Response({"data": "not found"}, status=404)
+
+
+class StorySaveUserListCreateApi(ListCreateAPIView):
+    permission_classes = (IsAuthenticated, )
+    queryset = StorySaveUser.objects.all()
+    serializer_class = StorySaveUserSerializer
+    pagination_class = None
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context
+    
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)
+
+
+
+
+class StorySaveUserDeleteApi(DestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = StorySaveUser.objects.all()
+
+
