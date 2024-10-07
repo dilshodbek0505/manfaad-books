@@ -108,5 +108,5 @@ class BookSerializer(serializers.ModelSerializer):
     def get_category(obj):
         return {
             "name": obj.category.name,
-            "icon": obj.category.icon.url,
+            # "icon": obj.category.icon.url,
         }
