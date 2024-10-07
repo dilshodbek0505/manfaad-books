@@ -3,9 +3,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.book.models import BookSave, UserBookRating
 from apps.book.api_endpoints.BookSave.serializers import BookSaveSerializer, BookSaveListSerializer, \
-    BookLikedListSerializer, BookLikeSerializer
+    BookLikedSerializer
 
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, UpdateAPIView, ListAPIView
 from rest_framework.response import Response
 
 
@@ -43,29 +43,21 @@ class BookSaveListApi(GenericAPIView):
         return Response({"data": serializer.data}, status=200)
 
 
-class BookLikedListApi(GenericAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = BookLikedListSerializer
-
-    def get(self, request, *args, **kwargs):
-        user = self.request.user
-        liked_books = UserBookRating.objects.filter(user=user, is_liked=True)
-        serializer = self.serializer_class(instance=liked_books, many=True)
-        return Response({"data": serializer.data}, status=200)
+class BookLikedUpdateApi(UpdateAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = BookLikedSerializer
+    queryset = UserBookRating.objects.all()
 
 
-class BookLikedCreateApi(GenericAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = BookLikeSerializer
+class BookLikedListApi(ListAPIView):
+    permission_classes = (IsAuthenticated, )
+    serializer_class = BookLikedSerializer
+    pagination_class = None
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+    def get_queryset(self):
+        return UserBookRating.objects.filter(user = self.request.user)
 
-        return Response({"data": "book_saved"}, status=200)
-
-    def delete(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-
-
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+        return context

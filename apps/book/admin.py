@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from django.conf import settings
 
 from apps.book.models import Book, Author, Category, UserBookRating, BookChapter, Goal, \
-    Collection, UserStatistics, Story, StoryUser
+    Collection, UserStatistics, Story, StoryUser, StorySaveUser
 from apps.book.api_endpoints.UserStatistics.forms import UserStatisticsForm
 
 
@@ -78,3 +78,4 @@ class UserStatisticsAdmin(admin.ModelAdmin):
 
 admin.site.register(Story)
 admin.site.register(StoryUser)
+admin.site.register(StorySaveUser)

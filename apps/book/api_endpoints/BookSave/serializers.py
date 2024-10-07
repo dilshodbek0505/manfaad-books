@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.book.models import BookSave, Book, UserBookRating
+from apps.book.models import BookSave, UserBookRating
 from apps.book.api_endpoints.BookInfo.serializers import BookSerializer
 
 
@@ -20,21 +20,20 @@ class BookSaveListSerializer(serializers.ModelSerializer):
     def get_book(self, obj):
         user = self.context.get('user')
         return BookSerializer(instance=obj.book, context={'user': user}).data
+    
 
-
-class BookLikedListSerializer(serializers.ModelSerializer):
+class BookLikedSerializer(serializers.ModelSerializer):
     book = serializers.SerializerMethodField()
 
     class Meta:
         model = UserBookRating
-        fields = ("id", "book")
+        fields = ("id", "book", "is_liked")
+    
 
     def get_book(self, obj):
         user = self.context.get('user')
-        return BookSerializer(instance=obj.book, context={'user': user}).data
+        return BookSerializer(instance = obj.book, context={'user': user}).data
+    
 
-
-class BookLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserBookRating
-        fields = ("book", "user")
+    
+    
