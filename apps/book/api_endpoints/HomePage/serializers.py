@@ -37,20 +37,17 @@ class HomeSerializer(serializers.Serializer):
 
         user_goals = UserStatistics.objects.get(user=user).goals.all()
 
-        if section_number == 1:
-            name = user_goals[0].name
-            categories = user_goals[0].categories.all()
-        elif section_number == 2:
-            name = user_goals[1].name
-            categories = user_goals[1].categories.all()
-        elif section_number == 3:
-            name = user_goals[2].name
-            categories = user_goals[2].categories.all()
+        data = list()
 
-        books = Book.objects.filter(category__in=categories)
-        serializer = BookSerializer(books, many=True, context={"user": user})
+        for goal in user_goals:
+            books = Book.objects.filter(category__in=goal.categories.all())
+            serializer = BookSerializer(books, many=True, context={"user": user})
+            data.append({
+                "section_name": goal.name,
+                "data": serializer.data
+            })
 
-        return {"section_name": name, "data": serializer.data}
+        return data[section_number-1]
 
     def get_section_1(self):
         return self.random_order_books(1)
@@ -80,4 +77,5 @@ class HomeSerializer(serializers.Serializer):
 
 
 class EmptySerializer(serializers.Serializer):
-    ...
+    class Meta:
+        ref_name = "HomeEmptySerializer"

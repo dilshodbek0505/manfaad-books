@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from apps.notification.models import UserFCMToken, NotificationUser
-from apps.notification.serializers import FCMTokenSerializer, NotificationUserSerializer
+from apps.notification.serializers import FCMTokenSerializer, NotificationUserSerializer, EmptySerializer
 from apps.notification.permissions import IsOwner
 
 
@@ -57,6 +57,7 @@ class NotificationUserDetail(RetrieveAPIView):
 
 class UserNotificationExist(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = EmptySerializer
 
     def get(self, request, *args, **kwargs):
         notification_count = NotificationUser.objects.filter(user=self.request.user, is_read=False).count()

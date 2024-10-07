@@ -22,3 +22,8 @@ class NotificationUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotificationUser
         fields = ('id', 'is_read', 'created_at', 'sent_time', 'notification')
+
+
+class EmptySerializer(serializers.Serializer):
+    class Meta:
+        ref_name = "NotificationEmptySerializer"

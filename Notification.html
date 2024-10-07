@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Push Notifications</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js"></script>
+</head>
+<body>
+<h1>Push Notifications with Firebase</h1>
+
+<script>
+    // Ваша конфигурация Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyD3wSSNQIbK5c-umYpELfgTys8OrtQSZIQ",
+        authDomain: "manfaad-10112.firebaseapp.com",
+        projectId: "manfaad-10112",
+        storageBucket: "manfaad-10112.appspot.com",
+        messagingSenderId: "535978628150",
+        appId: "1:535978628150:web:3b6c4a513ca5fdd900f497",
+        measurementId: "G-08R26LF4Z9"
+    };
+
+    // Инициализация Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    // Регистрация Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log('Service Worker зарегистрирован с областью:', registration.scope);
+            })
+            .catch((err) => {
+                console.log('Ошибка регистрации Service Worker:', err);
+            });
+    }
+
+    // Запрос разрешения на отправку уведомлений и получение FCM-токена
+    function requestFCMToken() {
+        // Запрашиваем разрешение на отправку уведомлений
+        Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+                console.log('Разрешение на уведомления предоставлено.');
+                return messaging.getToken();
+            } else {
+                console.error('Разрешение на уведомления не предоставлено.');
+            }
+        }).then((token) => {
+            if (token) {
+                console.log('FCM Token получен:', token);
+                // Отправляем токен на сервер Django для регистрации
+                registerTokenOnServer(token);
+            }
+        }).catch((error) => {
+            console.error('Ошибка получения FCM токена:', error);
+        });
+    }
+
+    // Функция для отправки FCM-токена на сервер Django
+    function registerTokenOnServer(token) {
+        fetch('http://127.0.0.1:8000/api/v1/notification/register-fcm-token/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token 72a5e580bb7c7b84dc3e60373a5ea1ebeb3a3217',
+            },
+            body: JSON.stringify({token: token})
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Ответ сервера на регистрацию токена:', data);
+            })
+            .catch((error) => {
+                console.error('Ошибка регистрации FCM токена на сервере:', error);
+            });
+    }
+
+    // Вызываем функцию для запроса токена
+    requestFCMToken();
+</script>
+</body>
+</html>

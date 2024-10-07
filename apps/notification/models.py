@@ -33,7 +33,7 @@ class NotificationUser(BaseModel):
         verbose_name_plural = _("Notification users")
 
     def __str__(self):
-        return f"{self.user.username} - {self.is_read}"
+        return f"{self.user.phone_number} - {self.is_read}"
 
 
 class UserFCMToken(BaseModel):

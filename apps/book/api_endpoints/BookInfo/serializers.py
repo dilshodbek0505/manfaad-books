@@ -21,7 +21,7 @@ class BookChapterSerializer(serializers.ModelSerializer):
         return obj.point.total_seconds()
 
 
-class BookSerializer(serializers.ModelSerializer):
+class BookDetailsSerializer(serializers.ModelSerializer):
     duration = serializers.SerializerMethodField()
     author = serializers.SerializerMethodField()
     category = serializers.SerializerMethodField()
@@ -75,3 +75,38 @@ class BookSerializer(serializers.ModelSerializer):
         url = hmac.new(secret_key, data.encode(), hashlib.sha256).hexdigest()
 
         return url
+
+
+
+
+class BookSerializer(serializers.ModelSerializer):
+    duration = serializers.SerializerMethodField()
+    author = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
+    is_saved = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Book
+        fields = ("id", "title", "duration", "category", "author", "img", "like_count", "is_premium", "is_saved")
+
+    def get_is_saved(self, obj):
+        user = self.context.get('user')
+        return BookSave.objects.filter(user=user, book=obj).exists()
+
+    @staticmethod
+    def get_duration(obj):
+        minutes, seconds = divmod(int(obj.duration.total_seconds()), 60)
+        return f'{minutes:02d}:{seconds:02d}'
+
+    @staticmethod
+    def get_author(obj):
+        return {
+            "full_name": obj.author.full_name,
+        }
+
+    @staticmethod
+    def get_category(obj):
+        return {
+            "name": obj.category.name,
+            "icon": obj.category.icon.url,
+        }

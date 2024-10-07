@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from apps.notification.models import Notification, NotificationUser
+from apps.notification.models import Notification, NotificationUser, UserFCMToken
 from apps.notification.tasks import send_notification
 
 User = get_user_model()
