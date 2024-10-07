@@ -21,6 +21,9 @@ from apps.book.api_endpoints.Story.views import (
 )
 
 
+app_name = "book"
+
+
 urlpatterns = [
     path('book-details/<uuid:book_id>/', BookWithGenerateAudioUrl.as_view()),
     path('book-audio/<uuid:book_id>/<str:book_url>/<uuid:user_id>/', BookWithoutGenerateAudioUrl.as_view()),

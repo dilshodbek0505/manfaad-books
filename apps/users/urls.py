@@ -8,6 +8,9 @@ from apps.users.api_endpoints.Auth.views import (
     RegisterOtpApi
 )
 
+app_name = 'user'
+
+
 
 urlpatterns = [
     # user api

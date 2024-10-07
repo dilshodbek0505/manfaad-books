@@ -4,12 +4,12 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from apps.book.api_endpoints.BookInfo.serializers import BookSerializer
-from apps.book.api_endpoints.Search.serializers import SearchHomeSerializer
+from apps.book.api_endpoints.Search.serializers import SearchHomeSerializer, EmptySerializer
 from apps.book.models import Book
 
 
 class SearchHomeApi(GenericAPIView):
-    serializer_class = SearchHomeSerializer
+    serializer_class = EmptySerializer
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):

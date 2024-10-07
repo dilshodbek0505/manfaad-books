@@ -36,3 +36,7 @@ class SearchHomeSerializer(serializers.Serializer):
             "challenges": self.get_challenges(),
         }
 
+
+class EmptySerializer(serializers.Serializer):
+    class Meta:
+        ref_name = "SearchEmptySerializer"

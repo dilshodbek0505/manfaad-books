@@ -80,4 +80,5 @@ class HomeSerializer(serializers.Serializer):
 
 
 class EmptySerializer(serializers.Serializer):
-    ...
+    class Meta:
+        ref_name = "HomeEmptySerializer"
