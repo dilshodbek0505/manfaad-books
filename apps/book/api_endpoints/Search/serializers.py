@@ -2,24 +2,8 @@ from rest_framework import serializers
 
 from apps.book.models import Book, Collection, Category
 from apps.book.api_endpoints.BookInfo.serializers import BookSerializer
-
-
-class CollectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Collection
-        fields = ("id", "image")
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    book_count = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Category
-        fields = ("id", "name", "icon", "book_count")
-
-    def get_book_count(self, obj):
-        book_count = Book.objects.filter(category=obj).count()
-        return book_count
+from apps.book.api_endpoints.Category.serializers import CategorySerializer
+from apps.book.api_endpoints.Collection.serializers import CollectionSerializer
 
 
 class SearchHomeSerializer(serializers.Serializer):
