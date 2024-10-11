@@ -1,29 +1,6 @@
 from django.urls import path
-
-from apps.book.api_endpoints.BookInfo.views import (
-    BookWithGenerateAudioUrl,
-    BookWithoutGenerateAudioUrl
-)
-from apps.book.api_endpoints.HomePage.views import (
-    HomePage,
-)
-from apps.book.api_endpoints.BookSave.views import (
-    BookSaveApi,
-    BookSaveListApi,
-    BookLikedListApi,
-    BookLikedUpdateApi
-)
-from apps.book.api_endpoints.Search.views import (
-    SearchHomeApi,
-    SearchDataApi
-)
-from apps.book.api_endpoints.Story.views import (
-    StoryListApi,
-    StoryUpdateApi,
-    StorySaveUserListCreateApi,
-    StorySaveUserDeleteApi
-)
-
+from apps.book.api_endpoints import *
+from apps.book.api_endpoints.Goal import GoalListAPIView
 
 app_name = "book"
 
@@ -51,5 +28,9 @@ urlpatterns = [
 
     # liked
     path('book-user-like/list/', BookLikedListApi.as_view()),
-    path('book-user-like/details/<uuid:pk>/', BookLikedUpdateApi.as_view())
+    path('book-user-like/details/<uuid:pk>/', BookLikedUpdateApi.as_view()),
+
+    path('category/list/', CategoryListAPIView.as_view(), name='category-list'),
+    path('goal/list/', GoalListAPIView.as_view(), name='goal-list'),
+
 ]

@@ -1,24 +1,18 @@
 from django.urls import path
-from apps.users.api_endpoints.Auth.views import (
-    UserLoginApi,
-    UserRegisterApi,
-    UserDetailsApi,
-    ConfirmOtpApi,
-    LoginOtpApi,
-    RegisterOtpApi
-)
 
-app_name = 'user'
+from .api_endpoints import *
 
+app_name = 'users'
 
 
 urlpatterns = [
-    # user api
-    path('otp-login/', LoginOtpApi.as_view()),
-    path('otp-register/', RegisterOtpApi.as_view()),
-    path('login/', UserLoginApi.as_view()),
-    path('register/', UserRegisterApi.as_view()),
-    path('user-details/', UserDetailsApi.as_view()),
-    path('confirm-otp/', ConfirmOtpApi.as_view()),
+    path('login/', UserLoginExists.as_view(), name='login'),
+    path('login/confirm/', UserLoginConfirm.as_view(), name='login-otp'),
+    path('register/exists/', UserRegisterExists.as_view(), name='register-exists'),
+    path('register/confirm/', UserRegisterOtp.as_view(), name='register-otp'),
+    path('register/', UserRegister.as_view(), name='register'),
+    path('user/statistics/', UserStatistics.as_view(), name='statistics'),
+    path('user/details/', UserDetails.as_view(), name='user-details'),
 
 ]
+

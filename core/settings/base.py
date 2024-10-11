@@ -52,7 +52,6 @@ CUSTOM_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
-    "rest_framework.authtoken",
     "drf_yasg",
     "corsheaders",
     "modeltranslation",
@@ -61,7 +60,7 @@ THIRD_PARTY_APPS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+        "apps.users.authentication.TokenAuthentication",
     ),
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
@@ -198,3 +197,8 @@ firebase_admin.initialize_app(cred)
 
 # cors headers settings
 CORS_ALLOW_ALL_ORIGINS = True
+
+# csrf settings
+CSRF_TRUSTED_ORIGINS = [
+    "https://585c-195-158-2-126.ngrok-free.app",
+]

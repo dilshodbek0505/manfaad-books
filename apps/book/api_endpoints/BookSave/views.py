@@ -61,3 +61,11 @@ class BookLikedListApi(ListAPIView):
         context = super().get_serializer_context()
         context['user'] = self.request.user
         return context
+
+
+__all__ = [
+    'BookSaveApi',
+    'BookSaveListApi',
+    'BookLikedListApi',
+    'BookLikedUpdateApi',
+]

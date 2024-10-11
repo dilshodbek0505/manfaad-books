@@ -12,3 +12,6 @@ class HomePage(GenericAPIView):
     def get(self, request, *args, **kwargs):
         serializer = HomeSerializer(context={'user': self.request.user})
         return Response(serializer.data)
+
+
+__all__ = ['HomePage']

@@ -9,7 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/common/", include("apps.common.urls", namespace="common")),
     path("api/v1/notification/", include("apps.notification.urls", namespace="notifications")),
-    path("api/v1/user/", include('apps.users.urls', namespace='user')),
+    path("api/v1/user/", include('apps.users.urls', namespace='users')),
     path("api/v1/", include("apps.book.urls", namespace="book"))
 ]
 

@@ -10,3 +10,5 @@ class AddRating(CreateAPIView):
     serializer_class = UserBookRatingSerializer
     queryset = UserBookRating.objects.all()
 
+
+__all__ = ['AddRating']

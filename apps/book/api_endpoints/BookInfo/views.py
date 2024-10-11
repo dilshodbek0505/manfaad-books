@@ -89,4 +89,7 @@ class BookWithoutGenerateAudioUrl(GenericAPIView):
         return response
 
 
-
+__all__ = [
+    'BookWithGenerateAudioUrl',
+    'BookWithoutGenerateAudioUrl',
+]

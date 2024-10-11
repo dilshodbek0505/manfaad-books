@@ -10,3 +10,8 @@ class BookChapterRetrieve(RetrieveAPIView):
     serializer_class = BookChapterSerializer
     queryset = Book.objcets.all()
     lookup_field = 'pk'
+
+
+__all__ = [
+    'BookChapterRetrieve',
+]
